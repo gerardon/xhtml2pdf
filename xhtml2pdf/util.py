@@ -579,7 +579,9 @@ class pisaFileObject:
                 #mimetype = getMimeType(path)
 
                 # Using HTTPLIB
-                server, path = urllib.splithost(uri[uri.find("//"):])
+                parsed_uri = urlparse.urlparse(uri)
+                server = parsed_uri.netloc
+                path = parsed_uri.path
                 if uri.startswith("https://"):
                     conn = httplib.HTTPSConnection(server)
                 else:
@@ -617,7 +619,7 @@ class pisaFileObject:
                 if os.path.isfile(uri):
                     self.uri = uri
                     self.local = uri
-                
+
                     self.setMimeTypeByName(uri)
                     if self.mimetype.startswith('text'):
                         self.file = open(uri, "r") #removed bytes... lets hope it goes ok :/
